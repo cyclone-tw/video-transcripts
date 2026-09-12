@@ -1,5 +1,4 @@
 const params = new URLSearchParams(location.search);
-const slug = document.body.dataset.slug;
 let player;
 let paragraphs = [];
 let chapters = [];
@@ -26,6 +25,13 @@ function seekTo(seconds) {
   player.playVideo();
 }
 
+function setChapterNow(chapterIndex) {
+  const label = document.getElementById("chapter-now");
+  const ch = chapters[chapterIndex];
+  if (!label || !ch) return;
+  label.textContent = `${formatTime(ch.start)}  ${ch.titleZh}`;
+}
+
 function render(data) {
   document.title = `${data.titleZh} · ${data.titleEn}`;
   document.getElementById("video-title").textContent = data.titleZh;
@@ -44,6 +50,7 @@ function render(data) {
     btn.dataset.chapter = String(idx);
     nav.appendChild(btn);
   });
+  setChapterNow(0);
 
   const root = document.getElementById("transcript");
   root.innerHTML = "";
@@ -90,16 +97,17 @@ function highlight(t) {
   for (const p of inChapter) {
     if (t + 0.2 >= p.start) current = p;
   }
-  if (activeId === current.id) return;
-  activeId = current.id;
-  paragraphs.forEach((p) => p.el.classList.toggle("active", p.id === current.id));
+  setChapterNow(chapterIndex);
   document.querySelectorAll("#chapter-nav .chip").forEach((btn) => {
-    if (Number(btn.dataset.chapter) === current.chapterIndex) {
+    if (Number(btn.dataset.chapter) === chapterIndex) {
       btn.setAttribute("aria-current", "true");
     } else {
       btn.removeAttribute("aria-current");
     }
   });
+  if (activeId === current.id) return;
+  activeId = current.id;
+  paragraphs.forEach((p) => p.el.classList.toggle("active", p.id === current.id));
   current.el.scrollIntoView({ block: "nearest", behavior: "smooth" });
 }
 
@@ -112,6 +120,8 @@ function onYouTubeIframeAPIReady() {
   const youtubeId = document.body.dataset.youtubeId;
   player = new YT.Player("player", {
     videoId: youtubeId,
+    width: "100%",
+    height: "100%",
     playerVars: {
       rel: 0,
       modestbranding: 1,
@@ -130,10 +140,19 @@ function onYouTubeIframeAPIReady() {
 window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
 
 async function boot() {
+  window.videoTranscriptsTheme.initTheme();
   await window.videoTranscriptsAuth.maybeGate();
   const res = await fetch("./transcript.json");
   const data = await res.json();
   render(data);
+  window.videoTranscriptsTheme.setChaptersOpen(
+    window.videoTranscriptsTheme.chaptersOpen()
+  );
+  document.getElementById("chapter-toggle").addEventListener("click", () => {
+    window.videoTranscriptsTheme.setChaptersOpen(
+      !window.videoTranscriptsTheme.chaptersOpen()
+    );
+  });
   const lang = params.get("lang");
   setLang(lang === "zh" || lang === "en" || lang === "both" ? lang : "both");
   document.querySelectorAll("[data-lang-btn]").forEach((btn) => {

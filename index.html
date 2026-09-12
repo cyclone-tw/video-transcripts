@@ -1,13 +1,18 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hant" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
   <title>影片對照稿入口</title>
-  <link rel="stylesheet" href="assets/styles.css?v=3">
+  <script>
+    document.documentElement.dataset.theme =
+      localStorage.getItem("video-transcripts-theme") === "light" ? "light" : "dark";
+  </script>
+  <link rel="stylesheet" href="assets/styles.css?v=6">
 </head>
 <body>
+  <div class="starfield" aria-hidden="true"></div>
   <div id="gate" class="open" role="dialog" aria-modal="true" aria-labelledby="gate-title">
     <form id="gate-form" class="gate-form">
       <h1 id="gate-title">需要密碼</h1>
@@ -20,6 +25,17 @@
   </div>
 
   <main class="wrap" hidden id="app">
+    <div class="catalog-top">
+      <button type="button" class="icon-btn" id="theme-toggle" aria-pressed="true" aria-label="切換為淺色模式" title="淺色模式">
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 3v2M12 19v2M5 12H3M21 12h-2M6.3 6.3 4.9 4.9M19.1 19.1l-1.4-1.4M17.7 6.3l1.4-1.4M4.9 19.1l1.4-1.4"/>
+          <circle cx="12" cy="12" r="4"/>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M21 14.3A8.4 8.4 0 1 1 9.7 3 7 7 0 0 0 21 14.3z"/>
+        </svg>
+      </button>
+    </div>
     <header>
       <h1>影片對照稿</h1>
       <p class="lede">邊看影片、邊看中英對照逐字稿。點時間戳會跳到該段。之後同系列影片也會放在這裡。</p>
@@ -28,9 +44,9 @@
       <h2>怎麼用</h2>
       <ol>
         <li>點「打開對照稿」。</li>
-        <li>左邊（手機在上面）是 YouTube 影片，右邊是分段逐字稿。</li>
-        <li>點某一段或章節，影片會跳到該時間。</li>
-        <li>可用「中文／對照／英文」切換顯示。</li>
+        <li>左邊是影片（約佔 2/3），右邊是逐字稿（約佔 1/3）。手機則影片在上。</li>
+        <li>點某一段，影片會跳到該時間。章節列預設收合，需要時再展開。</li>
+        <li>可用「中文／對照／英文」切換，右上角可切銀河暗黑／淺色。</li>
       </ol>
     </section>
     <section class="card">
@@ -42,10 +58,11 @@
     </footer>
   </main>
 
+  <script src="assets/theme.js?v=5"></script>
   <script src="assets/auth.js?v=2"></script>
   <script>
-    function formatDuration(text) { return text || ""; }
     async function boot() {
+      window.videoTranscriptsTheme.initTheme();
       await window.videoTranscriptsAuth.maybeGate();
       document.getElementById("app").hidden = false;
       const videos = await fetch("videos.json").then((r) => r.json());
