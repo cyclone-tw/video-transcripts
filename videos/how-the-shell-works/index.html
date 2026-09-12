@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Shell 是怎麼運作的</title>
+  <link rel="stylesheet" href="../../assets/styles.css?v=3">
+</head>
+<body data-slug="how-the-shell-works" data-youtube-id="hV3_XZXeDQo" data-lang="both">
+  <div id="gate" class="open" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+    <form id="gate-form" class="gate-form">
+      <h1 id="gate-title">需要密碼</h1>
+      <p>輸入密碼後才能看這支影片的對照稿。</p>
+      <label for="gate-input">密碼</label>
+      <input id="gate-input" type="password" autocomplete="current-password" required>
+      <button type="submit">進入</button>
+      <p id="gate-err" class="gate-err" hidden>密碼不對，再試一次。</p>
+    </form>
+  </div>
+
+  <header class="site-header">
+    <a class="ghost" href="../../">回目錄</a>
+    <div>
+      <h1 id="video-title">Shell 是怎麼運作的</h1>
+      <span class="meta" id="video-sub">How the Shell Works</span>
+    </div>
+    <div>
+      <button type="button" data-lang-btn="zh">中文</button>
+      <button type="button" data-lang-btn="both" aria-pressed="true">對照</button>
+      <button type="button" data-lang-btn="en">English</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="stage">
+      <div class="player-frame"><div id="player"></div></div>
+      <p class="hint">點右側段落或下方章節，影片會跳到該秒數。</p>
+      <nav id="chapter-nav" class="chapter-nav" aria-label="章節"></nav>
+    </aside>
+    <main class="transcript" id="transcript"></main>
+  </div>
+
+  <script src="../../assets/auth.js?v=2"></script>
+  <script src="../../assets/player.js?v=4"></script>
+  <script src="https://www.youtube.com/iframe_api"></script>
+</body>
+</html>

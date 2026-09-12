@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>影片對照稿入口</title>
+  <link rel="stylesheet" href="assets/styles.css?v=3">
+</head>
+<body>
+  <div id="gate" class="open" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+    <form id="gate-form" class="gate-form">
+      <h1 id="gate-title">需要密碼</h1>
+      <p>這是私人學習站。輸入密碼後才能看影片清單與對照稿。</p>
+      <label for="gate-input">密碼</label>
+      <input id="gate-input" type="password" autocomplete="current-password" required>
+      <button type="submit">進入</button>
+      <p id="gate-err" class="gate-err" hidden>密碼不對，再試一次。</p>
+    </form>
+  </div>
+
+  <main class="wrap" hidden id="app">
+    <header>
+      <h1>影片對照稿</h1>
+      <p class="lede">邊看影片、邊看中英對照逐字稿。點時間戳會跳到該段。之後同系列影片也會放在這裡。</p>
+    </header>
+    <section class="card">
+      <h2>怎麼用</h2>
+      <ol>
+        <li>點「打開對照稿」。</li>
+        <li>左邊（手機在上面）是 YouTube 影片，右邊是分段逐字稿。</li>
+        <li>點某一段或章節，影片會跳到該時間。</li>
+        <li>可用「中文／對照／英文」切換顯示。</li>
+      </ol>
+    </section>
+    <section class="card">
+      <h2>影片清單</h2>
+      <ul class="list" id="video-list"></ul>
+    </section>
+    <footer class="note">
+      <p>逐字稿依英文字幕整理並譯成繁中，供個人學習用。原片版權屬作者。</p>
+    </footer>
+  </main>
+
+  <script src="assets/auth.js?v=2"></script>
+  <script>
+    function formatDuration(text) { return text || ""; }
+    async function boot() {
+      await window.videoTranscriptsAuth.maybeGate();
+      document.getElementById("app").hidden = false;
+      const videos = await fetch("videos.json").then((r) => r.json());
+      const list = document.getElementById("video-list");
+      list.innerHTML = videos.map((v) => `
+        <li class="row">
+          <div>
+            <strong>${v.titleZh}</strong>
+            <span class="meta">${v.titleEn} · ${v.channel} · ${v.duration}</span>
+            <span class="meta">${v.summary || ""}</span>
+          </div>
+          <a class="open" href="videos/${v.slug}/">打開對照稿</a>
+        </li>
+      `).join("");
+    }
+    boot();
+  </script>
+</body>
+</html>

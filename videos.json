@@ -1,0 +1,12 @@
+[
+  {
+    "slug": "how-the-shell-works",
+    "youtubeId": "hV3_XZXeDQo",
+    "titleZh": "Shell 是怎麼運作的",
+    "titleEn": "How the Shell Works",
+    "channel": "Ryan Baker",
+    "duration": "21:32",
+    "published": "2026-07-30",
+    "summary": "從 echo $SHELL 一路講到環境變數、export、PATH，以及你按 Enter 之後到底發生什麼事。"
+  }
+]

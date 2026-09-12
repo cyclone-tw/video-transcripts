@@ -1,0 +1,431 @@
+{
+  "youtubeId": "hV3_XZXeDQo",
+  "titleZh": "Shell 是怎麼運作的",
+  "titleEn": "How the Shell Works",
+  "channel": "Ryan Baker",
+  "url": "https://www.youtube.com/watch?v=hV3_XZXeDQo",
+  "chapters": [
+    {
+      "start": 0,
+      "titleZh": "你到底在跟誰說話？",
+      "titleEn": "What are you talking to?",
+      "paragraphs": [
+        {
+          "start": 5.75,
+          "zh": "你在終端機視窗打字時，其實是在跟誰說話？",
+          "en": "What are you actually talking to when you type into a terminal window?"
+        },
+        {
+          "start": 10.87,
+          "zh": "對很多開發者來說，終端機有點像神奇的黑盒子：唸一串咒語，它就開始做事，甚至好像還認得你是誰。",
+          "en": "See, for a lot of developers, the terminal can feel like a bit of a magical black box. You recite a series of incantations and it just does stuff. It even seems to know who I am."
+        },
+        {
+          "start": 28.35,
+          "zh": "好吧，說得也是——但這不是魔法，而是一支程式。一旦搞懂是哪支程式、它實際在做什麼，以前覺得像魔法的事就會開始變得很理所當然。",
+          "en": "Okay, fair enough, but it's not magic. It's a program. And once you understand which program and what it's actually doing, a lot of stuff that may have felt like magic before can start to feel obvious."
+        }
+      ]
+    },
+    {
+      "start": 39,
+      "titleZh": "終端機 vs Shell",
+      "titleEn": "Terminal vs. shell",
+      "paragraphs": [
+        {
+          "start": 40.6,
+          "zh": "「terminal」這個詞其實有點歷史意外。它原本指的是人們用來連上大型主機的實體終端機。那些硬體早就不在了，但這個名字留下來了。",
+          "en": "The word terminal is actually somewhat of a historical accident. It refers to the physical hardware terminals that people used to connect to mainframe computers. Obviously, we don't have those anymore, but the name terminal stuck around."
+        },
+        {
+          "start": 56.55,
+          "zh": "現在的終端機只是在模擬那些古老裝置行為的應用程式。終端機模擬器負責畫面：字型、顏色、捲動。它並不負責解讀你的指令。",
+          "en": "Modern terminals are just applications that emulate the behavior of those ancient devices. A terminal emulator handles the visuals such as fonts, colors, and scrolling, but it doesn't actually interpret any of your commands."
+        },
+        {
+          "start": 68.35,
+          "zh": "解讀指令的工作，屬於跑在終端機裡的另一支程式，叫做 shell。名字來自它像作業系統最外層的保護殼，坐在 kernel（核心）上面。Kernel 才真正管理硬體、行程與檔案。",
+          "en": "That job belongs to a separate program running inside the terminal called a shell. The name shell comes from this program's role as sort of a protective outermost layer of the operating system. It sits on top of the kernel, which is the core that actually manages your hardware, your running processes, and your files."
+        },
+        {
+          "start": 88.35,
+          "zh": "Shell 收下你打的文字，翻譯成 kernel 能懂的乾淨請求。這樣 kernel 永遠不必直接吃人類的原始文字，只有 shell 需要。",
+          "en": "The shell accepts your text as input and translates it into clean requests that the kernel can understand. And in this way, the kernel never has to accept raw human text as input, only the shell does."
+        },
+        {
+          "start": 100.39,
+          "zh": "往下走之前，先講清楚三個詞，避免混淆。檔案（file）是磁碟上組織好的資料：文字、圖片、原始碼，什麼都可以。很多人以為 JPEG 跟 PNG 本質不同，但其實所有檔案都只是位元組；差別只在位元組怎麼排，由讀它的程式決定。",
+          "en": "Before we go any further, it's probably worth defining exactly what I mean when I say file, program, and process. A file is organized data stored on disk. It could be some text, an image, some source code, anything really. A lot of people think there's something special about different file types, perhaps that a JPEG is fundamentally different from a PNG. But really, all files are just bytes. The difference between any two file formats is just how those bytes are arranged, and it's always up to the application consuming the file to decide."
+        },
+        {
+          "start": 140.91,
+          "zh": "程式（program）也是檔案，只是裡面的位元組剛好是電腦能執行的指令。在這支影片裡，program 跟可執行檔幾乎是同一個意思。有時人們也會把還沒編譯的原始碼叫做 program。",
+          "en": "A program is a file, too. Just one whose bytes happen to be instructions that the computer can execute. For our purposes, the term program and the term executable file are synonymous, although sometimes you'll hear program referring to a source code file that hasn't been compiled yet."
+        },
+        {
+          "start": 158.51,
+          "zh": "行程（process）則是程式真正跑起來之後的東西。磁碟上的程式檔自己不會做事，只是躺在那裡。Process 是把那個檔案載入記憶體、正在執行，有自己的記憶體配置，也在作業系統的「正在跑的東西」清單裡有一席。",
+          "en": "Finally, a process is what you get when a program actually runs. The program file on disk doesn't do anything by itself other than just sit there. A process is that program file loaded into memory and actively executing, with its own memory allocation and its own status in the operating system's list of running things."
+        },
+        {
+          "start": 179.23,
+          "zh": "所以 shell 也是一支程式：磁碟某處有一個可執行檔，裡面是定義 shell 行為的全部指令。等一下會找到這個檔案在哪。跟其他程式一樣，shell 跑起來就是一個 process。大家說「the shell」時，通常指的就是這個行程。",
+          "en": "As we said, the shell is a program, meaning that somewhere on disk there's an executable file containing every instruction that defines how the shell behaves. We'll discover exactly where this file is in just a second. And like any other program, the shell runs as a process. When people refer to the shell, they're typically referring to this process."
+        },
+        {
+          "start": 199.07,
+          "zh": "這個 shell 行程有自己的 ID、自己的記憶體，也能生出子行程（child processes）。等我們開始真正跑指令時，這點會變得很重要。",
+          "en": "The shell process has its own ID, its own memory, and the ability to spawn child processes. Which is a detail that'll matter more once we start actually running commands."
+        },
+        {
+          "start": 209.11,
+          "zh": "Shell 有好幾種口味，意思是有多支不同程式都在扮演 shell 的角色。最常見的兩個是 Linux 預設的 Bash，以及 macOS 預設的 Z shell（zsh）。到目前這個層次，大殼之間的差異大多看不見，所以這裡的概念通用。",
+          "en": "Shells come in a few different flavors, which is really to say that there are multiple distinct programs that all fulfill the role of a shell. The two most common are called Bash, which is default in most Linux systems, and Z shell, which is the default in macOS. The differences between any two big shells at this level are mostly invisible, meaning the concepts here should apply across all of them."
+        }
+      ]
+    },
+    {
+      "start": 229,
+      "titleZh": "echo $SHELL",
+      "titleEn": "echo $SHELL",
+      "paragraphs": [
+        {
+          "start": 231.51,
+          "zh": "要知道系統跑的是哪一個 shell，一條指令就夠：`echo $SHELL`。對講者來說，這會印出磁碟上真正 shell 程式的位置（例如 `/bin/zsh`）。之後會正式講路徑；現在只要知道這種字串代表磁碟上一個獨一無二的位置。",
+          "en": "You can find out which shell your system runs with a single command: echo $SHELL. For me, this returns the location on disk where the actual shell program lives. We'll explore file paths properly in the future, but for now just know that this type of string represents a unique location on disk. In this case, it's the location where the shell program file actually lives."
+        },
+        {
+          "start": 257.51,
+          "zh": "這裡其實有三件事要拆：指令 `echo`、錢字號 `$`，以及單字 `SHELL`。先從 echo 開始。",
+          "en": "There are really three things to unpack here. There's the command echo, the dollar sign, and the word SHELL. So, let's start with echo."
+        },
+        {
+          "start": 267.31,
+          "zh": "`echo` 只是把參數印回螢幕。例如 `echo 1 2 3` 就會印出 1 2 3。字串也可以 echo。它很好用，也非常單純，沒有太多魔法。",
+          "en": "Echo is a command that simply prints its arguments back to the screen. For example, we can echo out a few words like so. Echo 1 2 3 will simply print 1 2 3 to the screen. We can also echo strings like this. Echo is a useful command, and it's also a very simple command. There's really not much more to it."
+        },
+        {
+          "start": 287.75,
+          "zh": "那就奇怪了：如果 `echo $SHELL` 印出了 `/bin/zsh`，那 `$SHELL` 是怎麼變成那個路徑的？",
+          "en": "So that raises the question. If echo $SHELL printed /bin/zsh, then how did $SHELL become /bin/zsh?"
+        }
+      ]
+    },
+    {
+      "start": 295,
+      "titleZh": "什麼是環境變數？",
+      "titleEn": "What's an environment variable?",
+      "paragraphs": [
+        {
+          "start": 297.83,
+          "zh": "要懂這件事，得談環境變數（environment variable）。環境變數是 shell 存在自己行程記憶體裡的文字變數。請記住：它是文字，不是數字、不是陣列、也不是別的型別。之後在 shell 裡會一再碰到這個事實。",
+          "en": "To understand that, we need to talk about environment variables. An environment variable is a text variable that the shell stores in its process memory. And do take note that it is a text variable rather than a number, an array, or anything else. This fact will arise again and again while working with the shell."
+        },
+        {
+          "start": 317.27,
+          "zh": "內部來說，shell 維護一張「名稱 → 值」的對照表，叫做 environment。`SHELL` 就是這張表裡的其中一筆。",
+          "en": "Internally, the shell maintains a map from variable names to values called the environment. And the name SHELL is one of the entries in this map."
+        },
+        {
+          "start": 326.83,
+          "zh": "可以用 `printenv`（print environment）把整張表用 key=value 印出來。不必背每一筆：環境變數可以非常多，多數由作業系統或 shell 設定檔寫入，不同機器內容差很多。這裡只要注意到表裡的 `SHELL` 那一筆。",
+          "en": "We can use a command called printenv to examine the map. Printenv stands for print environment, and it will print the entire map in a key-value format. Definitely don't worry about memorizing every entry here. There can be an awful lot of environment variables, and in practice most of them are set by the operating system or your shell configuration anyway. So the exact contents tend to differ significantly across systems. Here, just take note of the SHELL entry in this map."
+        },
+        {
+          "start": 355.59,
+          "zh": "也可以直接 `printenv SHELL` 看單一變數。結果跟剛才一樣。上一次我們是用錢字號走到同一個值。",
+          "en": "We can also run printenv directly with a variable's name to see its value. As expected, this returns the same /bin/zsh as before, although last time we used the dollar sign to get there."
+        },
+        {
+          "start": 367.75,
+          "zh": "`$` 叫做 expansion operator（展開運算子）。它叫 shell 把變數名稱換成它的值。所以在 `echo` 被呼叫之前，`$SHELL` 已經先被內部對照表替換成 `/bin/zsh`。",
+          "en": "The dollar sign is called the expansion operator, and it simply instructs the shell to replace a variable's name with its value. Hence $SHELL was substituted into /bin/zsh via the internal map before echo was ever called."
+        },
+        {
+          "start": 383.75,
+          "zh": "自己建變數也很簡單，語法就是 `NAME=value`。再用 `$NAME` 就能取回剛才指定的值。等號兩邊不能有空白，因為 shell 用空白切開指令與參數；寫成 `NAME = value` 會是無效的。",
+          "en": "We can also create our own variables pretty easily. The syntax is just NAME=value. And once again, we can use the expansion operator to access the value that we assigned. Notice that there aren't any spaces surrounding the equal sign. That's because the shell uses white space to separate commands and arguments. So this, for example, would be invalid."
+        },
+        {
+          "start": 406.19,
+          "zh": "那再用 `printenv` 看這個新變數呢？結果什麼都沒印出來。為什麼 `printenv SHELL` 有值，`printenv NAME` 卻像沒這回事？",
+          "en": "We can also use printenv to examine our new variable. Except this doesn't seem to return anything. So why not? What's the difference between SHELL and NAME that causes printenv SHELL to print the value associated with the SHELL variable, but printenv NAME seems to print nothing?"
+        }
+      ]
+    },
+    {
+      "start": 422,
+      "titleZh": "為什麼 printenv 看不到我的變數？",
+      "titleEn": "Why doesn't printenv see my variable?",
+      "paragraphs": [
+        {
+          "start": 425.19,
+          "zh": "其實剛才說「printenv 會印出整個 environment」是說謊了。它只印得出對照表的一個子集。不過這不完全是 printenv 的錯。",
+          "en": "Well, it turns out that I lied to you earlier when I said that printenv will print the entire environment. It actually only prints a subset of the whole environment map. But it's not really printenv's fault, and here's what I mean."
+        },
+        {
+          "start": 438.23,
+          "zh": "Shell 在維護內部變數表時，還會把每一筆標成 exported 或 not exported。差別在於：被 export 的變數會傳給子行程。",
+          "en": "As the shell maintains its internal map of variables, it also marks each entry as either exported or not exported. The difference is that exported variables are exported to child processes."
+        },
+        {
+          "start": 451.11,
+          "zh": "你打一個程式名時，shell 行程會再生成一個新行程去跑那個程式。這個新行程叫 child process，因為它從 parent process 生出來。被 export 的變數，就是會從 shell 傳下去給孩子的那些。",
+          "en": "When you type the name of a program, the shell process spawns a new process to run that program. And that new process is called a child process because it was born from the parent process. Exported variables are the ones that get passed from the shell down to child processes."
+        },
+        {
+          "start": 467.83,
+          "zh": "所以 `printenv NAME` 沒輸出：跑 printenv 的那個行程根本不知道 `NAME` 存在。隨便印一個胡謅的變數名，結果也一樣。",
+          "en": "That's why printenv NAME produced no output: because the process that ran the program called printenv never knew what NAME was, or that it even existed. We'd get the same thing if we ran printenv with some nonsense variable name like this."
+        },
+        {
+          "start": 484.15,
+          "zh": "習慣上會把已 export 的叫做環境變數，沒 export 的叫做 shell 變數。用 `export NAME` 就能把 shell 變數升級成環境變數。一 export，printenv 那個行程就能收到它了。",
+          "en": "It's common to refer to an exported variable as an environment variable and to a non-exported variable as a shell variable. We can promote a shell variable into an environment variable using the export keyword. For example, export NAME. Now, of course, because NAME was exported it will be passed along to printenv's process."
+        },
+        {
+          "start": 503.87,
+          "zh": "這就引出一個值得問的問題：為什麼有人會希望某個 shell 變數不要被 export？",
+          "en": "All of this raises a worthwhile question, which is why would one ever want a shell variable not to be exported?"
+        }
+      ]
+    },
+    {
+      "start": 510,
+      "titleZh": "快速回顧",
+      "titleEn": "Quick recap",
+      "paragraphs": [
+        {
+          "start": 513.15,
+          "zh": "先喘口氣，把目前拼起來的圖收回來——這堆東西堆得很快，講者也知道。我們從終端機應用程式開始，發現真正做事的是裡面那支叫 shell 的程式。",
+          "en": "Before we answer that though, let's take a breath and pull together everything we've built up so far, because it's not lost on me that this material can pile up fast. We started with the terminal application and found that the real work happens inside it in a program called the shell."
+        },
+        {
+          "start": 530.31,
+          "zh": "Shell 是程式，所以是磁碟上裝滿指令的檔案；跑起來就變成有自己記憶體與身分的行程。它的根本工作是當作業系統的文字介面，這也是它強大的原因之一。",
+          "en": "The shell is a program, which means that it's a file on disk full of instructions. And when it runs, it becomes a process with its own memory and its own identity on the operating system. The shell's fundamental job is to be a text-based interface to that operating system, which is a big part of what makes it so powerful."
+        },
+        {
+          "start": 548.91,
+          "zh": "它讀你打的文字，拆成指令、參數與變數。那些變數存在 shell 行程記憶體的那張表裡，我們叫它 environment。這張表讓我們能讀懂第一條指令 `echo $SHELL`。",
+          "en": "It works by reading the text that you type and parsing it into commands, arguments, and variables. Those variables are stored in the shell process's memory in a map that we call the environment. That map is what lets us make sense of our very first command, echo $SHELL."
+        },
+        {
+          "start": 566.15,
+          "zh": "`echo` 自己並不聰明，只是把拿到的參數印出來。真正的工作早一步發生：shell 看到 `$`，把 `SHELL` 當變數去表裡查值，然後才把結果交給 echo。",
+          "en": "We found that echo itself doesn't do anything clever. It just prints out the arguments it was handed. The real work happened one step before, when the shell saw the dollar sign and treated the word SHELL as a variable, looked up its value in the map, and only then handed the result to echo."
+        },
+        {
+          "start": 583.91,
+          "zh": "我們也看到可以自己定義變數：shell 不只是介面，本身也是一套腳本語言。有趣的地方來了：新變數對 echo 有效，對 printenv 卻是空的。",
+          "en": "We also saw that we can define our own variables, since the shell isn't just an interface, but it's also a scripting language in its own right. And that's where we hit something interesting. Our new variable worked with echo, but it showed up empty with printenv."
+        },
+        {
+          "start": 598.35,
+          "zh": "原因是 printenv 根本不在 shell 裡跑，而是在 shell 的子行程裡跑。子行程只拿得到 shell 明確交給它們的變數。我們沒有 export `NAME`，它就只活在 shell 裡，printenv 看不到。這又把我們帶回剛才暫停的問題：為什麼有時不要 export？",
+          "en": "The reason comes down to the fact that printenv doesn't run inside the shell at all, but instead runs in a child process of the shell. And child processes only receive the variables that the shell explicitly gives to them. Since we never exported NAME, it stayed local to the shell, and printenv had no way to see it. Which brings us right back to the question that we paused on: why would we ever want a shell variable not to be exported in the first place?"
+        }
+      ]
+    },
+    {
+      "start": 625,
+      "titleZh": "環境到底是什麼？",
+      "titleEn": "What exactly is the environment?",
+      "paragraphs": [
+        {
+          "start": 627.91,
+          "zh": "答案取決於你怎麼理解 environment 到底是什麼。我們知道它是一張表、存文字變數、屬於那個 shell 行程。但它不是某種大家共用的全域狀態；它真的只屬於創造它的那個 shell 行程。",
+          "en": "The answer comes down to how you conceptualize what exactly the environment is. We know that it's a map, and we know that it stores text variables, and we know that it belongs to the shell process. But it's not some type of shared global state. It truly belongs only to that shell process where it was created."
+        },
+        {
+          "start": 648.15,
+          "zh": "當 shell 生出子行程時，它把「已 export 變數」的一份快照交給孩子。孩子裡的改動不會傳回父母；父母在生完孩子之後再改，也不會傳下去。",
+          "en": "When the shell spawns a child process, it passes a snapshot of its exported variables to that child. Changes in the child won't propagate up, and changes in the parent after spawning the child won't propagate down."
+        },
+        {
+          "start": 661.71,
+          "zh": "仔細想，有些變數根本不該被 export。例如 `PPID` 存的是「目前行程的父行程 ID」。如果孩子從 shell 繼承了 `PPID`，它會把「shell 的父親」當成自己的父親，從孩子的角度看這根本是錯的。",
+          "en": "If you think about it, this means that some variables simply shouldn't be exported. Take for example this variable called PPID. PPID stores the process ID of the current process's parent. You could imagine then, if a child process inherited PPID from the shell, it would be carrying around the shell's parent's ID as its own parent's ID, which from the child's perspective is simply incorrect."
+        },
+        {
+          "start": 687.79,
+          "zh": "所以講者覺得「environment variable」這個詞有點名不副實。Shell 的 environment 比較不像孩子「活在裡面」的環境，而比較像出生時被塞進手裡的一份快照。",
+          "en": "It's for this reason that I tend to think the term environment variable is a bit of a misnomer. Fundamentally, the shell's environment isn't something that a child process lives inside so much as a snapshot that it's handed at birth."
+        },
+        {
+          "start": 704.11,
+          "zh": "如果 shell 生出兩個孩子（兩個兄弟），各自拿到獨立的複本，誰也看不到對方的變數。跑起來之後，他們也看不到 shell 裡後來的變更。每個行程只帶著自己的私有快照往前走。",
+          "en": "If the shell were to spawn two children, two siblings if you will, each one would get its own independent copy, and neither sibling could see the other's variables. And once they're running, neither can see the changes that happen back in the shell. Every process just carries its own private snapshot forward."
+        },
+        {
+          "start": 724.39,
+          "zh": "細心的觀眾這時大概問題一堆：shell 自己有父行程嗎？那它的 environment 從哪來？孩子再生孩子時，environment 會一路傳下去嗎？子行程自己也有 export 的概念嗎？這些都是好問題，也指向更深一層：親子行程的故事並不是從 shell 才開始，也不必然在 printenv 結束。",
+          "en": "At this point, the astute viewer might just be swirling with questions. Does the shell itself have a parent process? And if so, where does the shell get its environment from? What happens when a child process spawns a child of its own? Does the environment just keep passing down the chain? Do child processes themselves have a notion of exporting? These are all great questions, and they get at something deeper. This whole parent and child process story doesn't start at the shell, and it doesn't necessarily end at printenv."
+        }
+      ]
+    },
+    {
+      "start": 757,
+      "titleZh": "自己寫一個 printenv",
+      "titleEn": "Writing our own printenv",
+      "paragraphs": [
+        {
+          "start": 757.51,
+          "zh": "那些問題以後再講。現在想先把「environment 是快照、環境變數不過就是文字」這件事焊牢。最好的辦法是親手碰到 environment：寫一支程式伸進去、把它印出來。我們自己的 printenv。",
+          "en": "We'll get to all of that in the future. For now, I really want to solidify this idea of the environment as a snapshot, and of environment variables as nothing more than just text. The best way to do that is to get our hands on the environment directly by writing our own program that reaches into it and prints it out. Our own version of printenv, if you will."
+        },
+        {
+          "start": 780.63,
+          "zh": "C 程式的入口是 `main`。你大概知道它可以接受兩個參數，通常叫 `argc` 和 `argv`。比較少人知道：在多數系統上，`main` 還能接受第三個參數 `envp`（environment pointer）。",
+          "en": "The main function is the entry point for a C program. And as you may already know, it can take two arguments, usually called argc and argv. Fewer people know though that on most systems, main can take a third argument called envp, or environment pointer."
+        },
+        {
+          "start": 796.07,
+          "zh": "`envp` 裝的就是 shell 交過來的 environment：一組以 null 結尾的字串陣列，每一筆都是 `key=value`。所以我們只要走訪陣列、一筆筆印出來。為了有點自己的味道，每一筆用金色印。",
+          "en": "And this one holds the shell's environment. It arrives as an array of null-terminated strings, each one a single key=value entry, which means that we can just iterate through the array and print them out one by one. And just to give the program our own little touch, let's print each entry in gold."
+        },
+        {
+          "start": 816.27,
+          "zh": "編譯並跑起來，輸出基本上跟真正的 printenv 一樣，只是顏色不同。這只是 C 程式拿到 environment 的其中一種方法，甚至不是最標準的；但它最能說明發生了什麼。畢竟這不是 C 教學影片。",
+          "en": "Once we compile and run it, you can see that it produces essentially the same output as the real printenv program, just in a different color. It's worth mentioning that this is only one way to reach the environment from a C program, and it's not even the most standard one. But it's probably the most illustrative. And after all, much to my chagrin, this is not a C programming video."
+        },
+        {
+          "start": 838.91,
+          "zh": "新程式帶來一個問題：我們有一支剛做好、用金色印環境的 printenv，系統也有一支印白色的 printenv。當我只打 `printenv`，跑的是哪一個？結果是系統那一支。為什麼？",
+          "en": "This new program leaves us with a problem. We have a newly minted printenv program, which prints the environment in gold, and the system has a program called printenv, which prints in white. So when I simply type printenv, which one runs? As we can see, the system's printenv one. So let's figure out why."
+        },
+        {
+          "start": 863.19,
+          "zh": "有一個指令叫 `which`：給它另一個指令的名字，它會回傳 shell 找到對應程式檔的確切位置。`which printenv` 告訴我們 shell 伸手去拿的是哪一支。別的程式也行，例如找 zsh；或再遞迴一點，找 `which` 自己。",
+          "en": "There's a command called which that takes the name of another command and returns the exact location where the shell finds the corresponding program file. Running which printenv shows us exactly which program called printenv the shell reaches for. And it works on other programs, too. So we could just as easily locate zsh, for example. Or, if you're feeling a little recursive, then we can locate which itself."
+        },
+        {
+          "start": 891.63,
+          "zh": "但這只告訴我們 shell 找到了哪裡，還沒告訴我們它怎麼知道該去哪裡找。",
+          "en": "But this only tells us where the shell found each program, not how it knew where to look."
+        }
+      ]
+    },
+    {
+      "start": 896,
+      "titleZh": "Shell 怎麼找到程式？",
+      "titleEn": "How does the shell find your programs?",
+      "paragraphs": [
+        {
+          "start": 897.87,
+          "zh": "那 shell 如何把一個光禿禿的程式名（像 printenv）變成磁碟上的實際路徑？先別急著看答案，想像你在設計 shell，會怎麼解這個問題。",
+          "en": "So, how does the shell take the bare name of a program like printenv and turn it into a path, into an actual location on disk? Before I show you, I want you to think about how you'd solve this problem if you were the one designing the shell."
+        },
+        {
+          "start": 914.83,
+          "zh": "一個作法是用 shell 變數把每個指令名對到路徑。例如把 printenv 設成某個路徑，然後用 `$printenv` 來呼叫。這不太好。我居然能這樣做，就表示真實的 shell 不是這樣做的。再者，每個指令前面都得加 `$`，而且每個想認得的程式都要單獨佔一個變數。",
+          "en": "One approach that you could try is to map every command name to a path using something like a shell variable. For example, if we set printenv to this path, then we can simply call it by referencing that shell variable. But this isn't great. The very fact that I was allowed to do this, first of all, means that it's not what the shell actually implements. Beyond that, though, under this model, every command would now need a dollar sign in front of it, and the shell would be holding a separate variable for every single program that we wanted to recognize."
+        },
+        {
+          "start": 948.99,
+          "zh": "另一個想法：每次跑指令就從整台機器由上到下搜一遍，找同名程式。這當然慢到要命；兩個程式同名時怎麼辦也不清楚，更別說還有一個同名但根本不是可執行檔的檔案。",
+          "en": "Another idea would be to have the shell search the entire machine from top to bottom every time you run a command, looking for a program with a matching name. But of course that's punishingly slow, and it doesn't say what should happen when two programs both go by the same name, let alone what should happen if there's a file with that same name that isn't even executable."
+        },
+        {
+          "start": 971.31,
+          "zh": "兩個問題都可以用「指定唯一一個目錄、所有程式都必須住在那裡」來修。這比較接近真實解法，但硬到會在作業系統層惹出真正的麻煩——之後講檔案系統時會再碰到。所以也不是答案。",
+          "en": "We could fix both of those problems by picking one single directory and declaring that all programs must live there. And while this is closer to the real solution, it's rigid in certain ways that will cause real operating system-level trouble. The sort of trouble that we'll get into more later when we explore the file system properly. So that's not quite the answer, either."
+        },
+        {
+          "start": 994.75,
+          "zh": "Shell 真正做的，是這些作法的混合。它維持一份要搜尋的短目錄清單，叫做 PATH，並把它暴露成環境變數，讓你能改。每當需要定位一個程式，它就依序走訪 PATH 上的目錄，在第一個匹配停下。",
+          "en": "What the shell actually does is sort of a blend of these approaches. It keeps a short list of directories to search through, called the PATH, and it exposes that list as an environment variable, so you're able to modify it. Whenever the shell needs to locate a program, it walks the directories on PATH one by one in order, and it stops at the first match."
+        },
+        {
+          "start": 1018.91,
+          "zh": "注意它是一條用冒號分隔的字串，不是陣列或 list——再一次，因為所有環境變數都只是文字。仔細看會發現 `/usr/bin` 在 PATH 上，但目前目錄不在。這就是為什麼剛才系統的 printenv 贏過我們自己那一支。",
+          "en": "Notice that it's a single colon-separated string, rather than an array or list, once again because all environment variables are only just text. Looking at it closer, we can see that /usr/bin is on the PATH, but our current directory isn't. And that's why the system's printenv beat ours just a moment ago."
+        },
+        {
+          "start": 1039.87,
+          "zh": "但假設我們真的想用金色印環境。因為 shell 由左到右讀 PATH，只要把目前目錄放到 PATH 最前面，就能「劫持」系統的 printenv。",
+          "en": "But say we really do want the environment printed in gold. Since the shell reads PATH left to right, we can hijack the system's printenv by putting our current directory at the very front of PATH."
+        },
+        {
+          "start": 1056.43,
+          "zh": "把這行拆開看：`.` 是目前目錄的簡寫；冒號把它和後面分開；`$PATH` 展開成 PATH 現在的值。所以我們其實在說：先目前目錄，再加上原本 PATH 裡的全部，再依這個順序寫回 PATH。",
+          "en": "Let's read this line piece by piece. The dot is shorthand for the current directory. The colon separates it from everything after. And of course $PATH expands to PATH's current value. So what we're really saying is: take the current directory, then everything that was already on PATH, and reassign all of that back to PATH in that order."
+        },
+        {
+          "start": 1076.95,
+          "zh": "這是套件管理與 shell 設定裡會一直看到的模式。目前目錄現在排第一，shell 會先檢查這裡。果然，`which printenv` 指向目前目錄，跑 `printenv` 也出現金色輸出。",
+          "en": "This is a pattern that you'll see constantly while dealing with package management and shell configuration. The current directory now sits first, so the shell checks it before anywhere else. And sure enough, which printenv now points at our current directory. And running printenv gives us our gold output."
+        },
+        {
+          "start": 1096.99,
+          "zh": "這也正好解釋為什麼預設 PATH 不含目前目錄：那是刻意的安全決策。如果預設就搜目前目錄，你剛好待在某個資料夾裡、那裡有一支跟你信任的指令同名的雜牌程式，就可能在你毫無察覺時被拿去跑。",
+          "en": "This, as it turns out, is exactly why your current directory isn't on the PATH by default to begin with. Omitting it is a deliberate security decision. If the current directory were on PATH by default, then any stray program sitting in whatever random folder you happen to be in that shares a name with a program that you trust could run in its place without you ever realizing it."
+        },
+        {
+          "start": 1118.87,
+          "zh": "最後，為了科學，把 PATH 整個清掉看看。現在跑 `which zsh` 會怎樣？應該會得到一個整齊的錯誤，說找不到 zsh 吧？",
+          "en": "And finally, in the name of science, let's see what happens if we wipe the PATH variable out entirely. So what would happen now if we were to run which zsh, for example? Surely we'll just get a tidy little error telling us that the zsh program can't be found, right?"
+        },
+        {
+          "start": 1135.75,
+          "zh": "會的——前提是 shell 還找得到 `which` 本身。PATH 空了之後，`which` 自己都找不到，更別說請它去找別的東西。",
+          "en": "Well, we would if the shell were able to find which in the first place. Which itself couldn't be found by the shell, let alone called upon to search for anything else."
+        },
+        {
+          "start": 1145.99,
+          "zh": "值得一提：有些系統上 `which` 是 shell 內建指令，不是獨立程式。那些系統上 `which` 此時仍能動，因為 shell 根本不必去搜它。",
+          "en": "It's worth noting here that on some systems, which is actually built into the shell rather than implemented as a separate program. On these systems, you'll find that which actually still works here, since the shell doesn't have to search for it at all."
+        },
+        {
+          "start": 1158.87,
+          "zh": "無論如何，我們隨時可以用完整路徑直接呼叫程式。現在 `which` 能跑了，但因為 PATH 是空的，它還是搜不到 zsh。",
+          "en": "In any case, we can always call a program directly by its path like so. Now which runs correctly, but since PATH was empty, it was unable to search for zsh."
+        },
+        {
+          "start": 1171.55,
+          "zh": "這個實驗要證明的是：PATH 不只是 `which` 找程式的方法，也是 shell 找到 `which` 的方法，延伸來說，就是 shell 找到你那些程式的方法。所以若遇到 command not found，或你以為會跑 A 卻跑了 B，PATH 通常是第一個該檢查的地方。",
+          "en": "The whole point of this exercise is to demonstrate that PATH is not just how which finds your programs. It's also how the shell finds which, and by extension, how the shell finds your programs, too. So if you're ever running into any command not found errors, or you expect one program to run but actually another program runs, the PATH is usually a good first place to check."
+        }
+      ]
+    },
+    {
+      "start": 1192,
+      "titleZh": "man pages",
+      "titleEn": "man pages",
+      "paragraphs": [
+        {
+          "start": 1193.87,
+          "zh": "一支影片塞了不少東西，希望對你有用。收尾前再留一個工具，之後不管往哪走都會用得上。",
+          "en": "This has been a lot of material for one video, and I hope you found it valuable. But before we wrap up, I want to leave you with just one more tool, and I think it's one that'll serve you well, no matter where you decide to go from here."
+        },
+        {
+          "start": 1205.75,
+          "zh": "今天跑過的幾乎每條指令、你以後會碰到的幾乎每條指令，都自帶說明書。打開它只要打 `man` 加上指令名。真心建議跟 man page 混熟：對指令有疑問時，它常常比搜尋引擎更快，而且幾乎保證對應你機器上那個版本。",
+          "en": "Nearly every command that we've run today, and nearly every command you'll ever encounter, comes with its own built-in manual. To open it, just type man followed by the command's name. I'd really encourage you to get comfortable with man pages. They're often faster than reaching for a search engine when you have questions about commands, and they're virtually guaranteed to be accurate for the exact version of the tool that you have installed."
+        },
+        {
+          "start": 1229.23,
+          "zh": "進了 man page 之後，用方向鍵上下捲，按 `q` 回到 shell。當然，若忘了 man page 怎麼用，就去看它的 man page。",
+          "en": "Once you're inside a man page, you can use the arrow keys to scroll up and down, and press Q to go back to your shell. And of course, if you ever forget how to use a man page, simply check out its man page."
+        }
+      ]
+    },
+    {
+      "start": 1241,
+      "titleZh": "結尾",
+      "titleEn": "Outro",
+      "paragraphs": [
+        {
+          "start": 1241.6,
+          "zh": "所以，你在終端機打字時，到底在跟誰說話？你在跟 shell 說話。它是跑在你機器上的一支程式、作業系統的一部分，工作就是收下你給的文字、翻譯成行動，再派遣其他程式把事情做完。",
+          "en": "So, what are you actually talking to when you type into a terminal? You're talking to a shell, which is a program that's running on your machine. It's part of your operating system, and whose whole job is to take the text that you give it and translate it into an action, dispatching to other programs to get things done."
+        },
+        {
+          "start": 1261.79,
+          "zh": "謝謝看到最後。有問題或想法請留在下面。如果喜歡這支影片，訂閱真的很有幫助，也代表你會看到接下來的內容：檔案系統、行程樹、行程怎麼互相說話，以及 SSH、tmux 這類更動手的工具。想看哪個主題也歡迎說。希望你看得愉快，保重。",
+          "en": "Thank you for hanging with me all the way to the end. As always, if you've got questions or comments, please do leave them down below. And if you've enjoyed this video, a subscription genuinely helps a lot. And it means that you'll be around for what's next, because there's so much more to explore here, from the file system, the process tree, how processes talk to one another, as well as more hands-on tools like SSH and tmux. And of course, if there's something in particular you'd like to see covered, I'd love to hear about it. With that, I do hope you've enjoyed, and please take care."
+        }
+      ]
+    }
+  ]
+}
